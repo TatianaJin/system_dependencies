@@ -10,11 +10,14 @@ if [ "X$app_dir" == "X" ]; then
   . $(dirname $0)/utils.sh $@
 fi
 
+# set default
 if [ "X$GLOG_VERSION" == "X" ]; then
   GLOG_VERSION=0.4.0
 fi
 
+# skip if glog exists
 if [ "X${GLOG_HOME}" != "X" ]; then return; fi
+
 export GLOG_HOME=$app_dir/glog-${GLOG_VERSION}
 cd $src_dir
 [ -e glog-${GLOG_VERSION}.tar.gz ] || wget "https://github.com/google/glog/archive/v${GLOG_VERSION}.tar.gz" -O glog-${GLOG_VERSION}.tar.gz || exit 1

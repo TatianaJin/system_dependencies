@@ -22,19 +22,18 @@ exec_name=$0
 . $(dirname $0)/utils.sh $@
 
 
-# [ -e $bashrc ] && rm $bashrc
-
 echo export PATH=$app_dir/bin:\$PATH >> $bashrc
 echo export CMAKE_PREFIX_PATH=$app_dir:\$CMAKE_PREFIX_PATH >> $bashrc
 
 
+. $dir/install_gcc.sh || exit 1
+. $dir/install_cmake.sh || exit 1
 
-. $dir/install_gcc.sh
-. $dir/install_cmake.sh
+. $dir/install_protobuf.sh || exit 1 
+. $dir/install_libhdfs.sh gsasl uuid || exit 1
+. $dir/install_zmq.sh || exit 1
+. $dir/install_orc.sh || exit 1
+. $dir/install_gflags.sh || exit 1
+. $dir/install_glog.sh || exit 1
 
-. $dir/install_protobuf.sh
-. $dir/install_libhdfs3.sh
-. $dir/install_zmq.sh
-. $dir/install_orc.sh
-. $dir/install_gflags.sh
-. $dir/install_glog.sh
+echo >> $bashrc
