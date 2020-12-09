@@ -22,6 +22,7 @@ cd $src_dir
 
 cd gflags-${GFLAGS_VERSION}
 mkdir -p build && cd build || exit 1
-cmake .. -DCMAKE_INSTALL_PREFIX=${GFLAGS_HOME} && make -j $make_threads install || exit 1
+cmake .. -DCMAKE_INSTALL_PREFIX=${GFLAGS_HOME} -DBUILD_SHARED_LIBS=ON && make -j $make_threads install || exit 1
 echo export GFLAGS_HOME=$GFLAGS_HOME >> $bashrc
 echo "export CMAKE_PREFIX_PATH=$GFLAGS_HOME:\$CMAKE_PREFIX_PATH" >> $bashrc
+echo "export LD_LIBRARY_PATH=$GFLAGS_HOME/lib:\$LD_LIBRARY_PATH" >> $bashrc

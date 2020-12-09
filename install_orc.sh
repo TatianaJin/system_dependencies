@@ -81,6 +81,6 @@ function build_orc {
   echo export ORC_HOME=$ORC_HOME >> $bashrc
 }
 
-[ "X$ORC_HOME" != "X" ] && exit 0
+[ "X$ORC_HOME" != "X" ] && return
 install_dependencies || exit 1
 build_orc

@@ -18,7 +18,7 @@ if hash cmake 2>/dev/null; then
   if [[ ${version_no[0]} -eq 3 ]] && [[ ${version_no[1]} -gt 13 ]]; then skip=1; fi
 fi
 
-if [ ! $skip -eq 1 ] ; then
+if [[ $skip -ne 1 ]] ; then
   export CMAKE_HOME=$app_dir/cmake-${CMAKE_VERSION}
   cd $src_dir
   [ -e cmake-${CMAKE_VERSION}.tar.gz ] || wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz
