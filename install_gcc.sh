@@ -27,7 +27,7 @@ function install_mpfr {
   blue_echo '======== installing mpfr 4.1.0 ========='
   if [ ! -e mpfr-4.1.0.tar.gz ]; then wget https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.gz || exit $?; fi
   if [ ! -e mpfr-4.1.0 ]; then tar -xf mpfr-4.1.0.tar.gz || exit $?; fi
-  cd mpfr-4.1.0 && ./configure --prefix=$app_dir && make -j $make_threads && make install || exit $?
+  cd mpfr-4.1.0 && ./configure --prefix=$app_dir --with-gmp=$app_dir && make -j $make_threads && make install || exit $?
 }
 
 function install_mpc {
@@ -35,7 +35,7 @@ function install_mpc {
   blue_echo '========= installing mpc 1.2.0 ========='
   if [ ! -e mpc-1.2.0.tar.gz ]; then wget https://ftp.gnu.org/gnu/mpc/mpc-1.2.0.tar.gz || exit; fi
   if [ ! -e mpc-1.2.0 ]; then tar -xf mpc-1.2.0.tar.gz || exit; fi
-  cd mpc-1.2.0 && ./configure --prefix=$app_dir && make -j $make_threads && make install || exit $?
+  cd mpc-1.2.0 && ./configure --prefix=$app_dir --with-gmp=$app_dir --with-mpfr=$app_dir && make -j $make_threads && make install || exit $?
 }
 
 function install_gcc {
@@ -53,7 +53,7 @@ function install_gcc {
   blue_echo ======== installing gcc $GCC_VERSION  =========
   if [ ! -e gcc-$GCC_VERSION.tar.gz ]; then wget https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz || exit 1; fi
   if [ ! -e gcc-${GCC_VERSION} ]; then tar -xf gcc-${GCC_VERSION}.tar.gz || exit 1; fi
-  cd gcc-${GCC_VERSION} && CC=/usr/bin/gcc CXX=/usr/bin/g++ ./configure --disable-multilib --prefix=$app_dir/gcc-${GCC_VERSION} && make -j $make_threads && make install || exit 1
+  cd gcc-${GCC_VERSION} && CC=/usr/bin/gcc CXX=/usr/bin/g++ ./configure --disable-multilib --prefix=$app_dir/gcc-${GCC_VERSION} --with-gmp=$app_dir --with-mpfr=$app_dir --with-mpc=$app_dir && make -j $make_threads && make install || exit 1
 
   echo export GCC_HOME=$GCC_HOME >> $bashrc
   echo export PATH=\$GCC_HOME/bin:\$PATH >> $bashrc

@@ -14,13 +14,15 @@ LZ4_VERSION=1.7.5
 
 function build_snappy {
   SNAPPY_HOME=$app_dir/snappy-${SNAPPY_VERSION}
-  cd $src_dir
-  [ -e snappy-${SNAPPY_VERSION}.tar.gz ] || wget "https://github.com/google/snappy/archive/${SNAPPY_VERSION}.tar.gz" -O snappy-${SNAPPY_VERSION}.tar.gz || exit 1
-  [ -e snappy-${SNAPPY_VERSION} ] || tar -zxf snappy-${SNAPPY_VERSION}.tar.gz || exit 1
+  if [ ! -e $SNAPPY_HOME ]; then
+    cd $src_dir
+    [ -e snappy-${SNAPPY_VERSION}.tar.gz ] || wget "https://github.com/google/snappy/archive/${SNAPPY_VERSION}.tar.gz" -O snappy-${SNAPPY_VERSION}.tar.gz || exit 1
+    [ -e snappy-${SNAPPY_VERSION} ] || tar -zxf snappy-${SNAPPY_VERSION}.tar.gz || exit 1
 
-  cd snappy-${SNAPPY_VERSION}
-  mkdir -p build && cd build || exit 1
-  cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DSNAPPY_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=${SNAPPY_HOME} -DBUILD_SHARED_LIBS=OFF && make -j $make_threads install || exit 1
+    cd snappy-${SNAPPY_VERSION}
+    mkdir -p build && cd build || exit 1
+    cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DSNAPPY_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=${SNAPPY_HOME} -DBUILD_SHARED_LIBS=OFF && make -j $make_threads install || exit 1
+  fi
   export SNAPPY_HOME
   #export LD_LIBRARY_PATH=$SNAPPY_HOME/lib:$LD_LIBRARY_PATH
   #export LIBRARY_PATH=$SNAPPY_HOME/lib:$LIBRARY_PATH
@@ -29,13 +31,15 @@ function build_snappy {
 
 function build_zlib {
   ZLIB_HOME=$app_dir/zlib-${ZLIB_VERSION}
-  cd $src_dir
-  [ -e zlib-${ZLIB_VERSION}.tar.gz ] || wget "http://zlib.net/fossils/zlib-${ZLIB_VERSION}.tar.gz" || exit 1
-  [ -e zlib-${ZLIB_VERSION} ] || tar -zxf zlib-${ZLIB_VERSION}.tar.gz || exit 1
+  if [ ! -e $ZLIB_HOME ]; then
+    cd $src_dir
+    [ -e zlib-${ZLIB_VERSION}.tar.gz ] || wget "http://zlib.net/fossils/zlib-${ZLIB_VERSION}.tar.gz" || exit 1
+    [ -e zlib-${ZLIB_VERSION} ] || tar -zxf zlib-${ZLIB_VERSION}.tar.gz || exit 1
 
-  cd zlib-${ZLIB_VERSION}
-  mkdir -p build && cd build || exit 1
-  cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=${ZLIB_HOME} -DBUILD_SHARED_LIBS=OFF && make -j $make_threads install || exit 1
+    cd zlib-${ZLIB_VERSION}
+    mkdir -p build && cd build || exit 1
+    cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=${ZLIB_HOME} -DBUILD_SHARED_LIBS=OFF && make -j $make_threads install || exit 1
+  fi
   export ZLIB_HOME
   export LD_LIBRARY_PATH=$ZLIB_HOME/lib:$LD_LIBRARY_PATH
   export LIBRARY_PATH=$ZLIB_HOME/lib:$LIBRARY_PATH
@@ -44,13 +48,15 @@ function build_zlib {
 
 function build_lz4 {
   LZ4_HOME=$app_dir/lz4-${LZ4_VERSION}
-  cd $src_dir
-  [ -e lz4-${LZ4_VERSION}.tar.gz ] || wget "https://github.com/lz4/lz4/archive/v${LZ4_VERSION}.tar.gz" -O lz4-${LZ4_VERSION}.tar.gz || exit 1
-  [ -e lz4-${LZ4_VERSION} ] || tar -zxf lz4-${LZ4_VERSION}.tar.gz || exit 1
+  if [ ! -e $LZ4_HOME ]; then
+    cd $src_dir
+    [ -e lz4-${LZ4_VERSION}.tar.gz ] || wget "https://github.com/lz4/lz4/archive/v${LZ4_VERSION}.tar.gz" -O lz4-${LZ4_VERSION}.tar.gz || exit 1
+    [ -e lz4-${LZ4_VERSION} ] || tar -zxf lz4-${LZ4_VERSION}.tar.gz || exit 1
 
-  cd lz4-${LZ4_VERSION}
-  mkdir -p build && cd build || exit 1
-  cmake ../contrib/cmake_unofficial -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=${LZ4_HOME} -DBUILD_SHARED_LIBS=OFF && make -j $make_threads install || exit 1
+    cd lz4-${LZ4_VERSION}
+    mkdir -p build && cd build || exit 1
+    cmake ../contrib/cmake_unofficial -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=${LZ4_HOME} -DBUILD_SHARED_LIBS=OFF && make -j $make_threads install || exit 1
+  fi
   export LZ4_HOME
   export LD_LIBRARY_PATH=$LZ4_HOME/lib:$LD_LIBRARY_PATH
   export LIBRARY_PATH=$LZ4_HOME/lib:$LIBRARY_PATH
@@ -81,6 +87,6 @@ function build_orc {
   echo export ORC_HOME=$ORC_HOME >> $bashrc
 }
 
-[ "X$ORC_HOME" != "X" ] && return
+[ "X$ORC_HOME" != "X" ] && [ -e $ORC_HOME ] && return
 install_dependencies || exit 1
 build_orc

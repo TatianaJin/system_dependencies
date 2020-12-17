@@ -28,3 +28,4 @@ mkdir -p build && cd build || exit 1
 cmake .. -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=${GLOG_HOME} && make -j $make_threads install || exit 1
 echo export GLOG_HOME=$GLOG_HOME >> $bashrc
 echo "export CMAKE_PREFIX_PATH=$GLOG_HOME:\$CMAKE_PREFIX_PATH" >> $bashrc
+echo "export LD_LIBRARY_PATH=$GLOG_HOME/lib64:\$LD_LIBRARY_PATH" >> $bashrc
